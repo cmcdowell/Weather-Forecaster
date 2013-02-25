@@ -28,10 +28,10 @@ def main():
     )
 
     parser.add_argument(
-        '-t',
+        '-d',
         '--forecast',
-        action = 'store_true',
-        help = 'display forcast for tomorrow'
+        action='store_true',
+        help='display more detailed forecast'
     )
 
     args = parser.parse_args()
@@ -55,14 +55,31 @@ def main():
     tree = etree.parse(xml)
     root = tree.getroot()
     item = root[0].find('item')
-    condition = item.find('{http://xml.weather.yahoo.com/ns/rss/1.0}condition').attrib
 
-    print u'{0}, {1}, {2}\u00B0{3}'.format(
-        condition['date'],
-        condition['text'],
-        condition['temp'],
-        units
-    )
+    if args.forecast:
+        forecasts = item.findall('{http://xml.weather.yahoo.com/ns/rss/1.0}forecast')
+
+        for forecast in forecasts:
+            forecast = forecast.attrib
+
+            print u'\n{0} {1}\n\tlow {2}\u00B0{3}\n\thigh {4}\u00B0{3}\n\t{5}\n\n'.format(
+                forecast['day'],
+                forecast['date'],
+                forecast['low'],
+                units,
+                forecast['high'],
+                forecast['text']
+            )
+    else:
+
+        condition = item.find('{http://xml.weather.yahoo.com/ns/rss/1.0}condition').attrib
+
+        print u'{0}, {1}, {2}\u00B0{3}'.format(
+            condition['date'],
+            condition['text'],
+            condition['temp'],
+            units
+        )
 
 
 if __name__ == '__main__':
