@@ -62,7 +62,7 @@ def main():
         for forecast in forecasts:
             forecast = forecast.attrib
 
-            print u'\n{0} {1}\n\tlow {2}\u00B0{3}\n\thigh {4}\u00B0{3}\n\t{5}\n\n'.format(
+            print u'\n{0} {1}\n\tlow {2}\u00B0{3}\n\thigh {4}\u00B0{3}\n\t{5}\n'.format(
                 forecast['day'],
                 forecast['date'],
                 forecast['low'],
