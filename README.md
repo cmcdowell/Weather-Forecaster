@@ -19,13 +19,13 @@ Then clone this repository into your `~/.bin` directory.
 You can use the script like this, but it might be a good idea to add it to the
 PATH in your .bashrc, you can do that by adding this to your .bashrc
 
-    export PATH=$PATH:$HOME/.bin
+    export PATH=$PATH:$HOME/.bin/Weather-Forecaster
     alias weather='weather.py'
 
 And changing the mode of the script to executable with `chmod +x weather.py`
 
 Finally you need to add the WOEID of your location to the script. Open up
-weather.py in your text editor and change the WOEID variable to reference your
+settings.ini in your text editor and change the WOEID variable to reference your
 location, you can find your WOIED [here](http://woeid.rosselliot.co.nz/lookup).
 
 ##Usage 

@@ -5,18 +5,15 @@ import sys
 import os
 import argparse
 import xml.etree.ElementTree as etree
+from ConfigParser import SafeConfigParser, Error
 
 
 def main():
 
-    print os.path.split(os.path.realpath(__file__))
-    sys.exit()
-
     base_url = 'http://weather.yahooapis.com/forecastrss?w='
-    WOEID = '44544'
 
-    parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
+    argument_parser = argparse.ArgumentParser()
+    group = argument_parser.add_mutually_exclusive_group()
     group.add_argument(
         '-c',
         '--celsius',
@@ -31,23 +28,40 @@ def main():
         help='display temperature in Fahrenheit'
     )
 
-    parser.add_argument(
+    argument_parser.add_argument(
         '-d',
         '--forecast',
         action='store_true',
         help='display more detailed forecast'
     )
 
-    args = parser.parse_args()
+    args = argument_parser.parse_args()
+
+    config_parser = SafeConfigParser()
+
+    path = os.path.split(os.path.realpath(__file__))[0]
+
+    try:
+        config_parser.read(path + '/settings.ini')
+        settings = dict(config_parser.items('location'))
+    except Error:
+        print 'settings.ini location section not found'
+        sys.exit()
+
+    try:
+        woeid = settings['woeid']
+    except KeyError:
+        print 'No woeid setting'
+        sys.exit()
 
     opener = urllib2.build_opener()
     opener.addheaders = [('User-agent', 'CLI Weather forecast script')]
 
-    url = base_url + WOEID + '&u=c'
+    url = base_url + woeid + '&u=c'
     units = 'C'
 
     if args.fahrenheit:
-        url = base_url + WOEID
+        url = base_url + woeid
         units = 'F'
 
     try:
