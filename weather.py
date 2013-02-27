@@ -2,11 +2,15 @@
 
 import urllib2
 import sys
+import os
 import argparse
 import xml.etree.ElementTree as etree
 
 
 def main():
+
+    print os.path.split(os.path.realpath(__file__))
+    sys.exit()
 
     base_url = 'http://weather.yahooapis.com/forecastrss?w='
     WOEID = '44544'
